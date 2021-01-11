@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
+import { Link, useHistory } from 'react-router-dom';
+
 import './style.css';
 import api from '../../service/api';
 
 import logoImg from '../../assets/logo.svg';
-import { Link } from 'react-router-dom';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -13,7 +14,9 @@ export default function Register() {
   const [city, setCity] = useState('');
   const [uf, setUf] = useState('');
 
-  function handleRegister(e) {
+  const history = useHistory();
+
+  async function handleRegister(e) {
     e.preventDefault();
     const data = {
       name,
@@ -23,8 +26,9 @@ export default function Register() {
       whatsapp,
     };
 
-    api.post('ongs', data);
-    console.log('api.post enviado');
+    const response = await api.post('ongs', data);
+    alert(`Cadastro realizado. Seu id de acesso: ${response.data.id}`);
+    history.push('/');
   }
   return (
     <div className="register-container">
