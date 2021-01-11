@@ -33,6 +33,7 @@ export default function Profile() {
     } catch (error) {
       console.log('Erro ao excluir incidente');
     }
+    setIncidents(incidents.filter((incident) => incident.id !== id));
   }
 
   return (
