@@ -12,10 +12,29 @@ export default function Profile() {
   const ongName = localStorage.getItem('ongName');
 
   useEffect(() => {
-    api.get('profile').then((response) => {
-      setIncidents(response.data);
-    });
+    api
+      .get('profile', {
+        headers: {
+          authorization: ongId,
+        },
+      })
+      .then((response) => {
+        setIncidents(response.data);
+      });
   }, [ongId]);
+
+  async function handleDeleteIncident(id) {
+    try {
+      await api.delete(`incidents/${id}`, {
+        headers: {
+          authorization: ongId,
+        },
+      });
+    } catch (error) {
+      console.log('Erro ao excluir incidente');
+    }
+  }
+
   return (
     <div className="profile-container">
       <header>
@@ -43,8 +62,13 @@ export default function Profile() {
               <p>{incident.description}</p>
 
               <strong>Valor</strong>
-              <p>{incident.value}</p>
-              <button>
+              <p>
+                {Intl.NumberFormat('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL',
+                }).format(incident.value)}
+              </p>
+              <button onClick={() => handleDeleteIncident(incident.id)}>
                 <FiTrash2 size="18" color="#a8a8b3"></FiTrash2>
               </button>
             </li>

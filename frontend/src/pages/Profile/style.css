@@ -54,6 +54,8 @@
 
 .casos-container ul {
   list-style: none;
+  flex: 1 0 35%;
+  margin-right: 20px;
 }
 
 .profile-container ul li {
