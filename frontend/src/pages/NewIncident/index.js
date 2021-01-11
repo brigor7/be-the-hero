@@ -11,6 +11,8 @@ export default function NewIncident() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [value, setValue] = useState('');
+  const ongId = localStorage.getItem('ongId');
+  console.log('ongId front = ' + ongId);
 
   const history = useHistory();
 
@@ -19,8 +21,11 @@ export default function NewIncident() {
     const data = { title, description, value };
 
     try {
-      const response = await api.post('incidents', data);
-      alert(`Caso ${title} cadastrado.`);
+      const response = await api.post('incidents', data, {
+        headers: {
+          Authorization: ongId,
+        },
+      });
       history.push('/profile');
     } catch (error) {
       console.log(error);
