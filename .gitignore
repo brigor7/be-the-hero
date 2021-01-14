@@ -1,1 +1,5 @@
 frontend/.gitignore
+backendN/yarn.lock
+backendN/yarn-error.log
+backendN/src/database/db.sqlite
+.gitignore
