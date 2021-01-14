@@ -23,13 +23,20 @@ routes.post(
   }),
   ongController.create
 );
+routes.get(
+  '/profile',
+  celebrate({
+    [Segments.HEADERS]: Joi.object({
+      authorization: Joi.string().required(),
+    }).unknown(),
+  }),
+  profileController.get
+);
 routes.delete('/ongs/:id', ongController.delete);
 
 routes.get('/incidents', incidentController.index);
 routes.post('/incidents', incidentController.create);
 routes.delete('/incidents/:id', incidentController.delete);
-
-routes.get('/profile', profileController.get);
 
 routes.post('/session', sessionController.create);
 
