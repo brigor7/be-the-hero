@@ -13,13 +13,13 @@ export default function Logon() {
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      const response = await api.post('sessions', { id });
+      const response = await api.post('session', { id });
       localStorage.setItem('ongId', id);
       localStorage.setItem('ongName', response.data.name);
       history.push('/profile');
     } catch (error) {
       console.error('Falha no login. Messagem: ', error);
-      alert(error);
+      alert('Falha no login. Messagem' + error);
     }
   }
 
