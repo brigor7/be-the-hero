@@ -34,7 +34,15 @@ routes.get(
 );
 routes.delete('/ongs/:id', ongController.delete);
 
-routes.get('/incidents', incidentController.index);
+routes.get(
+  '/incidents',
+  celebrate({
+    [Segments.QUERY]: Joi.object().keys({
+      page: Joi.number(),
+    }),
+  }),
+  incidentController.index
+);
 routes.post('/incidents', incidentController.create);
 routes.delete(
   '/incidents/:id',
