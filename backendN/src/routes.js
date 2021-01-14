@@ -3,6 +3,7 @@ const { celebrate, Segments, Joi } = require('celebrate');
 const ongController = require('./controller/ongController');
 const incidentController = require('./controller/incidentController');
 const profileController = require('./controller/profileController');
+const profileValidator = require('./validator/profileValidator');
 const sessionController = require('./controller/sessionController');
 
 const routes = express.Router();
@@ -23,6 +24,7 @@ routes.post(
   }),
   ongController.create
 );
+
 routes.get(
   '/profile',
   celebrate({
@@ -32,7 +34,16 @@ routes.get(
   }),
   profileController.get
 );
-routes.delete('/ongs/:id', ongController.delete);
+
+routes.delete(
+  '/ongs/:id',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().required(),
+    }),
+  }),
+  ongController.delete
+);
 
 routes.get(
   '/incidents',
@@ -54,6 +65,14 @@ routes.delete(
   incidentController.delete
 );
 
-routes.post('/session', sessionController.create);
+routes.post(
+  '/session',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      id: Joi.string().required(),
+    }),
+  }),
+  sessionController.create
+);
 
 module.exports = routes;
