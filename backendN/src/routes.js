@@ -1,4 +1,5 @@
 const express = require('express');
+const { celebrate, Segments, Joi } = require('celebrate');
 const ongController = require('./controller/ongController');
 const incidentController = require('./controller/incidentController');
 const profileController = require('./controller/profileController');
@@ -8,7 +9,20 @@ const routes = express.Router();
 routes.use(express.json());
 
 routes.get('/ongs', ongController.index);
-routes.post('/ongs', ongController.create);
+
+routes.post(
+  '/ongs',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      email: Joi.string().email(),
+      whatsapp: Joi.number().min(10),
+      city: Joi.string().required(),
+      uf: Joi.string().length(2),
+    }),
+  }),
+  ongController.create
+);
 routes.delete('/ongs/:id', ongController.delete);
 
 routes.get('/incidents', incidentController.index);
